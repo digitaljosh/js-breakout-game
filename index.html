@@ -10,6 +10,10 @@
 </head>
 <body>
 
+    <div style="display: none;">
+        <img id="source" src="images/game-sprite.png" width="300" height="227" />
+    </div>
+
 <canvas style="margin-top: 50px;" id="myCanvas" width="480" height="320"></canvas>
 
 <script>
@@ -26,7 +30,7 @@
     var dy = -2;
 
     // defines radius of ball
-    var ballRadius = 10;
+    var ballRadius = 30;
 
     // defines paddle
     var paddleHeight = 10;
@@ -57,10 +61,24 @@
 
     var score = 0;
 
+    var image = document.getElementById('source');
+
+
 
     // event listeners for button controls
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
+    // event listener for mouse control
+    document.addEventListener("mousemove", mouseMoveHandler, false);
+
+    // connect mouse movement to paddle
+    function mouseMoveHandler(e) {
+        var relativeX = e.clientX - canvas.offsetLeft;
+        if(relativeX > 0 && relativeX < canvas.width) {
+            // center of paddle is aligned with cursor
+            paddleX = relativeX - paddleWidth/2;
+        }
+    }
 
     function keyDownHandler(e) {
         if(e.keyCode == 39) {
@@ -102,6 +120,7 @@
         }
     }
 
+   
 
     function drawScore() {
         ctx.font = "16px Arial";
@@ -109,11 +128,13 @@
         ctx.fillText("Score: "+score, 8, 20);
     }
 
+    
 
     function drawBall() {
         ctx.beginPath();
         // draws ball, x and y position update at every interval to mimick movement
         ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+        ctx.drawImage(image, x, y, 30, 30);
         // color fill
         ctx.fillStyle = "#0095DD";
         ctx.fill();
@@ -178,6 +199,8 @@
                 // reset game
                 x = canvas.width/2;
                 y = canvas.height-30;
+                dx = 2;
+                dy = -2;
                 window.location.reload(true);
 
             }
@@ -191,6 +214,7 @@
         else if(leftPressed && paddleX > 0) {
             paddleX -= 7;
         }
+
 
         // updates x and y position for next interval
         x += dx;
