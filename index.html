@@ -11,10 +11,23 @@
 <body>
 
     <div style="display: none;">
-        <img id="source" src="images/game-sprite.png" width="300" height="227" />
+        <img id="source" src="images/game-sprite-2.png" width="300" height="227" />
     </div>
 
-<canvas style="margin-top: 50px;" id="myCanvas" width="480" height="320"></canvas>
+    <div>
+        <button id="start-game">Start Game</button>
+    </div>
+
+    <canvas style="margin-top: 50px;" id="myCanvas" width="480" height="320"></canvas>
+
+    <div>
+        <select name="speed" id="speed-option">
+            <option value="1">Baseline</option>
+            <option value="2">Chill'd</option>
+            <option value="3">Baked</option>
+            <option value="4">Marley'd</option>
+        </select>
+    </div>
 
 <script>
     // canvas element
@@ -26,11 +39,11 @@
     var y = canvas.height-30;
 
     // defines movement increments at each frame
-    var dx = 2;
-    var dy = -2;
+    var dx = 1;
+    var dy = -1;
 
     // defines radius of ball
-    var ballRadius = 30;
+    var ballRadius = 14;
 
     // defines paddle
     var paddleHeight = 10;
@@ -55,13 +68,15 @@
     for(var c=0; c < brickColumnCount; c++) {
         bricks[c] = [];
         for(var r=0; r < brickRowCount; r++) {
-            bricks[c][r] = { x: 0, y: 0, status: 1 };
+            bricks[c][r] = { x: 0, y: 0, status: 1, color: randomBrickColor() };
         }
     }
 
     var score = 0;
 
     var image = document.getElementById('source');
+
+    
 
 
 
@@ -106,7 +121,9 @@
                 // checks collision status of brick
                 // if 1, brick is drawn
                 if(b.status == 1) {
-                    if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
+                    // had to ammend the following y value to move the y point to the top of the ball-image
+                    // so it hits and erases block when the top of the ball hits the bottom of the block
+                    if(x+20 > b.x && x-20 < b.x+brickWidth && y-20 > b.y && y-20 < b.y+brickHeight) {
                         dy = -dy;
                         b.status = 0;
                         score++;
@@ -133,8 +150,10 @@
     function drawBall() {
         ctx.beginPath();
         // draws ball, x and y position update at every interval to mimick movement
-        ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-        ctx.drawImage(image, x, y, 30, 30);
+        //ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+        a = x - 18;
+        b = y - 22;
+        ctx.drawImage(image, a, b, 35, 35);
         // color fill
         ctx.fillStyle = "#0095DD";
         ctx.fill();
@@ -151,6 +170,12 @@
         ctx.closePath();
     }
 
+    function randomBrickColor() {
+        var colors = ['#6c086d', '#1d61ae', '#319a2d','#c91010','#f2d042'];
+        var randomColor = colors[Math.floor(Math.random() * colors.length)];
+        return randomColor;
+    }
+
 
     function drawBricks() {
         for(var c=0; c<brickColumnCount; c++) {
@@ -162,7 +187,7 @@
                     bricks[c][r].y = brickY;
                     ctx.beginPath();
                     ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                    ctx.fillStyle = "#0095DD";
+                    ctx.fillStyle = bricks[c][r].color;
                     ctx.fill();
                     ctx.closePath();
                 }
@@ -223,6 +248,7 @@
     }
 
     // calls draw() function every 10 milliseconds until we stop it
+
     setInterval(draw, 10);
     
 
