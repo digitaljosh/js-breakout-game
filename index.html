@@ -4,29 +4,39 @@
     <meta charset="utf-8" />
     <title>Gamedev Canvas Workshop</title>
     <style>
-    	* { padding: 0; margin: 0; }
+    	/** { padding: 0; margin: 0; }*/
     	canvas { background: #eee; display: block; margin: 0 auto; }
+        #select-button-wrapper {margin-top: 50px; margin-right: 10px;}
+        #select-wrapper {margin-bottom: 5px;}
+        #speed-option {width: 100%;}
+        #body-wrapper {display: flex; flex-flow: row wrap; margin-left: 25%;}
+
     </style>
 </head>
 <body>
+    <div id="body-wrapper">
+        <div id="select-button-wrapper">
+            <div style="display: none;">
+                <img id="source" src="images/game-sprite-2.png" width="300" height="227" />
+            </div>
 
-    <div style="display: none;">
-        <img id="source" src="images/game-sprite-2.png" width="300" height="227" />
-    </div>
+            <div id="select-wrapper">
+                <select name="speed" id="speed-option">
+                    <option value="1">Baseline</option>
+                    <option value="2">Chill'd</option>
+                    <option value="3">Baked</option>
+                    <option value="4">Marley'd</option>
+                </select>
+            </div>
 
-    <div>
-        <button onclick="startGame()">Start Game</button>
-    </div>
+            <div id="button-wrapper">
+                <button onclick="startGame()">Start Game</button>
+            </div>
+        </div>
 
-    <canvas style="margin-top: 50px;" id="myCanvas" width="480" height="320"></canvas>
-
-    <div>
-        <select name="speed" id="speed-option">
-            <option value="1">Baseline</option>
-            <option value="2">Chill'd</option>
-            <option value="3">Baked</option>
-            <option value="4">Marley'd</option>
-        </select>
+        <div id="canvas-wrapper">
+            <canvas style="margin-top: 50px;" id="myCanvas" width="480" height="320"></canvas>
+        </div>
     </div>
 
 <script>
@@ -229,8 +239,8 @@
                 // reset game
                 x = canvas.width/2;
                 y = canvas.height-30;
-                dx = 2;
-                dy = -2;
+                dx = 1;
+                dy = -1;
                 window.location.reload(true);
 
             }
@@ -239,10 +249,10 @@
         // moves paddle 7 pixels if L or R button pressed
         // doesn't allow paddle outside canvas boundaries
         if(rightPressed && paddleX < canvas.width-paddleWidth) {
-            paddleX += 7;
+            paddleX += 4;
         }
         else if(leftPressed && paddleX > 0) {
-            paddleX -= 7;
+            paddleX -= 4;
         }
 
 
@@ -254,8 +264,30 @@
 
     // calls draw() function every 10 milliseconds until we stop it
     function startGame() {
-        setInterval(draw, 10);
+        
+        var speed = 0;
+        alert(speed);
+        var selectElement = document.getElementById("speed-option");
+        var speedValue = selectElement.options[selectElement.selectedIndex].value;
+        alert("speedValue before if conditional: " + speedValue);
+        if(speedValue == 1) {
+            speed = 1;}
+        if(speedValue == 2) {
+            speed = 8;}
+        if(speedValue == 3) {
+            speed = 15;}
+        if(speedValue == 4) {
+            speed = 50;}
+        alert("speedValue after if conditional: " + speedValue);
+        alert(speed);
+
+        setInterval(draw, speed);
+        
+        
+        
     };
+
+
     
 
     
