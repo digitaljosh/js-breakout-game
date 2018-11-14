@@ -15,7 +15,7 @@
     </div>
 
     <div>
-        <button id="start-game">Start Game</button>
+        <button onclick="startGame()">Start Game</button>
     </div>
 
     <canvas style="margin-top: 50px;" id="myCanvas" width="480" height="320"></canvas>
@@ -38,8 +38,12 @@
     var x = canvas.width/2;
     var y = canvas.height-30;
 
+    // speed of ball
     // defines movement increments at each frame
-    var dx = 1;
+    // defines starting angle of trajectory
+    var posAndNegArray = ['-1','1']
+    var ballLeftorRight = parseInt(posAndNegArray[Math.floor(Math.random() * posAndNegArray.length)]);
+    var dx = ballLeftorRight;
     var dy = -1;
 
     // defines radius of ball
@@ -85,6 +89,7 @@
     document.addEventListener("keyup", keyUpHandler, false);
     // event listener for mouse control
     document.addEventListener("mousemove", mouseMoveHandler, false);
+
 
     // connect mouse movement to paddle
     function mouseMoveHandler(e) {
@@ -248,8 +253,9 @@
     }
 
     // calls draw() function every 10 milliseconds until we stop it
-
-    setInterval(draw, 10);
+    function startGame() {
+        setInterval(draw, 10);
+    };
     
 
     
