@@ -8,7 +8,7 @@
     	canvas {
             border-radius: 8px; 
             border:1px solid black; 
-            background: #32BDEE; 
+            background: #000000; 
             display: block; 
             margin: 0 auto; 
             background-image: url(images/canvas-background.png); 
@@ -231,7 +231,7 @@
         ctx.beginPath();
         // draws paddle
         ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-        ctx.fillStyle = "#1CA34E";
+        ctx.fillStyle = "#fff";
         ctx.fill();
         ctx.closePath();
     }
