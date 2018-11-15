@@ -13,6 +13,9 @@
             margin: 0 auto; 
             background-image: url(images/canvas-background.png); 
         }
+        #canvas-wrapper {
+            margin: auto;
+        }
         #canvas-overlay {
             width: 480px;
             height: 320px;
@@ -57,36 +60,8 @@
             margin-top: 10px;
         }
         #body-wrapper {
-            display: flex; 
-            flex-flow: row wrap; 
-            margin-left: 25%;
-        }
-        #select-wrapper {
-            margin-bottom: 5px; 
-            width: 100px;
-        }
-        #select-button-wrapper {
-            margin-top: 50px; 
-            margin-right: 10px;
-        }
-        #speed-option {
+            display: inline-flex;
             width: 100%;
-            height: 38px;
-            font-size: 15px;
-            border: 1px solid black;
-            border-radius: 8px;
-            background-color: #999;
-            color: white;
-            font-weight: 600;
-            padding-left: 6px;
-        }
-        #speed-option:hover {
-            background-color: #5e5e5e;
-        }
-        #pause-text {
-            margin-left: -350px;
-            margin-top: 380px;
-            z-index: 1;
         }
         
 
@@ -94,10 +69,8 @@
 </head>
 <body>
     <div id="body-wrapper">
-        <div id="select-button-wrapper">
-            <div style="display: none;">
-                <img id="source" src="images/game-sprite-2.png" width="300" height="227" />
-            </div>
+        <div style="display: none;">
+            <img id="source" src="images/game-sprite-2.png" width="300" height="227" />
         </div>
 
         <div id="canvas-wrapper">
@@ -113,7 +86,6 @@
             </div>
             <canvas style="margin-top: 50px;" id="myCanvas" width="480" height="320"></canvas>
         </div>
-        <p id="pause-text">Press spacebar to pause game.</p>
     </div>
 
 <script>
@@ -167,7 +139,6 @@
 
     var image = document.getElementById('source');
 
-    var paused = false;
 
 
 
@@ -177,21 +148,7 @@
     // event listener for mouse control
     document.addEventListener("mousemove", mouseMoveHandler, false);
 
-    // event listener for spacebar 
-    document.addEventListener('keydown', pauseHandler, false);
-    
-    
-    function pauseHandler(e) {
-        // p key
-        if(e.keyCode == 32) {
-            if(paused == true) {
-                paused = false;
-            }
-            else {
-                paused = true;
-            }
-        }
-    }
+  
 
 
 
@@ -238,7 +195,6 @@
                         score++;
                         if(score == brickRowCount*brickColumnCount) {
                             alert("YOU WIN, CONGRATULATIONS!");
-                            //inGame = false;
                             document.location.reload();
                         }
                     }
@@ -350,11 +306,11 @@
             paddleX -= 4;
         }
 
-        if(paused == false) {
-            // updates x and y position for next interval
-            x += dx;
-            y += dy;
-        }
+        
+        // updates x and y position for next interval
+        x += dx;
+        y += dy;
+        
         
     }
 
