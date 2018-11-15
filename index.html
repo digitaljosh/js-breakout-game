@@ -116,7 +116,7 @@
 
     var image = document.getElementById('source');
 
-    
+    var paused = false;
 
 
     // event listeners for button controls
@@ -125,8 +125,25 @@
     // event listener for mouse control
     document.addEventListener("mousemove", mouseMoveHandler, false);
 
+    // event listener for spacebar 
+    document.addEventListener('keydown', pauseHandler, false);
     
-
+    
+    function pauseHandler(e) {
+        // p key
+        if(e.keyCode == 32) {
+            if(paused == true) {
+                paused = false;
+                alert(dx);
+                alert(dy);
+            }
+            else {
+                paused = true;
+                alert(dx);
+                alert(dy);
+            }
+        }
+    }
 
 
 
@@ -284,10 +301,11 @@
             paddleX -= 4;
         }
 
-
-        // updates x and y position for next interval
-        x += dx;
-        y += dy;
+        if(paused == false) {
+            // updates x and y position for next interval
+            x += dx;
+            y += dy;
+        }
         
     }
 
