@@ -118,6 +118,8 @@
 
     var paused = false;
 
+    var inGame = false;
+
 
     // event listeners for button controls
     document.addEventListener("keydown", keyDownHandler, false);
@@ -134,13 +136,9 @@
         if(e.keyCode == 32) {
             if(paused == true) {
                 paused = false;
-                alert(dx);
-                alert(dy);
             }
             else {
                 paused = true;
-                alert(dx);
-                alert(dy);
             }
         }
     }
@@ -190,6 +188,7 @@
                         score++;
                         if(score == brickRowCount*brickColumnCount) {
                             alert("YOU WIN, CONGRATULATIONS!");
+                            inGame = false;
                             document.location.reload();
                         }
                     }
@@ -283,6 +282,7 @@
             else {
                 alert("GAME OVER");
                 // reset game
+                inGame = false;
                 x = canvas.width/2;
                 y = canvas.height-30;
                 dx = 1;
@@ -311,21 +311,25 @@
 
     // calls draw() function every 10 milliseconds until we stop it
     function startGame() {
-        
-        var speed = 0;
-        var selectElement = document.getElementById("speed-option");
-        var speedValue = selectElement.options[selectElement.selectedIndex].value;
-        if(speedValue == 1) {
-            speed = 1;}
-        if(speedValue == 2) {
-            speed = 8;}
-        if(speedValue == 3) {
-            speed = 15;}
-        if(speedValue == 4) {
-            speed = 50;}
-        
 
-        setInterval(draw, speed);
+        if(inGame == false) {
+        
+            var speed = 0;
+            var selectElement = document.getElementById("speed-option");
+            var speedValue = selectElement.options[selectElement.selectedIndex].value;
+            if(speedValue == 1) {
+                speed = 1;}
+            if(speedValue == 2) {
+                speed = 8;}
+            if(speedValue == 3) {
+                speed = 15;}
+            if(speedValue == 4) {
+                speed = 50;}
+            
+
+            setInterval(draw, speed);
+            inGame = true;
+        }
         
         
         
