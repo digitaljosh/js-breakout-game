@@ -10,13 +10,14 @@
             border:1px solid black; 
             background: #000000; 
             display: block; 
-            margin: 0 auto; 
-            background-image: url(images/canvas-background.png); 
+            margin: 0 auto;
+            background-image: url(https://oregonbaba.com/wp-content/uploads/2018/11/website-bckgrnd-V3-min-1.png)
+            /*background-image: url(images/canvas-background.png); */
         }
         #canvas-wrapper {
             margin: auto;
         }
-        #canvas-overlay {
+        .canvas-overlay {
             width: 480px;
             height: 320px;
             display: block;
@@ -70,11 +71,12 @@
 <body>
     <div id="body-wrapper">
         <div style="display: none;">
-            <img id="source" src="images/game-sprite-2.png" width="300" height="227" />
+            <!--<img id="source" src="images/game-sprite-2.png" width="300" height="227" />-->
+            <img id="source" src="https://oregonbaba.com/wp-content/uploads/2018/11/game-sprite-2.png" width="300" height="227" />
         </div>
 
         <div id="canvas-wrapper">
-            <div onclick="startGame()" id="canvas-overlay" class="empty">
+            <div onclick="startGame()" id="canvas-overlay" class="canvas-overlay">
                 <div id="overlay-content">
                     <div id="title">Baba G Presents:</div>
                     <div id="breakout">Breakout!</div>
@@ -89,6 +91,8 @@
     </div>
 
 <script>
+    // Global Variables
+
     // canvas element
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
@@ -139,6 +143,68 @@
 
     var image = document.getElementById('source');
 
+    var timer;
+
+    //var gameOver = false;
+
+
+
+    // call reloadVars to reset game instead of reloading page
+    function reloadVars() {
+        // canvas element
+        canvas = document.getElementById("myCanvas");
+        ctx = canvas.getContext("2d");
+
+        // ball starting position
+        x = canvas.width/2;
+        y = canvas.height-30;
+
+        // speed of ball
+        // defines movement increments at each frame
+        // defines starting angle of trajectory
+        posAndNegArray = ['-1','1']
+        ballLeftorRight = parseInt(posAndNegArray[Math.floor(Math.random() * posAndNegArray.length)]);
+        dx = ballLeftorRight;
+        dy = -1;
+
+        // defines radius of ball
+        ballRadius = 14;
+
+        // defines paddle
+        paddleHeight = 10;
+        paddleWidth = 75;
+        // starting point of paddle on x axis
+        paddleX = (canvas.width-paddleWidth)/2;
+
+        // button control boolean variables
+        rightPressed = false;
+        leftPressed = false;
+
+        // define brick variables
+        brickRowCount = 3;
+        brickColumnCount = 5;
+        brickWidth = 75;
+        brickHeight = 20;
+        brickPadding = 10;
+        brickOffsetTop = 30;
+        brickOffsetLeft = 30;
+
+        bricks = [];
+        for(var c=0; c < brickColumnCount; c++) {
+            bricks[c] = [];
+            for(var r=0; r < brickRowCount; r++) {
+                bricks[c][r] = { x: 0, y: 0, status: 1, color: randomBrickColor() };
+            }
+        }
+
+        score = 0;
+
+        image = document.getElementById('source');
+        
+        timer = clearInterval(timer);
+
+        //gameOver = false;
+    }
 
 
 
@@ -147,9 +213,6 @@
     document.addEventListener("keyup", keyUpHandler, false);
     // event listener for mouse control
     document.addEventListener("mousemove", mouseMoveHandler, false);
-
-  
-
 
 
     // connect mouse movement to paddle
@@ -179,6 +242,8 @@
         }
     }
 
+
+
     // detects if the ball collides with a brick
     function collisionDetection() {
         for(var c=0; c<brickColumnCount; c++) {
@@ -195,7 +260,10 @@
                         score++;
                         if(score == brickRowCount*brickColumnCount) {
                             alert("YOU WIN, CONGRATULATIONS!");
-                            document.location.reload();
+                            //document.location.reload();
+                            //window.location.reload(true);
+                            reset();
+                            
                         }
                     }
                 }
@@ -264,6 +332,7 @@
 
     function draw() {
         // clears canvas
+        
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBricks();
         drawBall();
@@ -287,13 +356,17 @@
             }
             else {
                 alert("GAME OVER");
-                // reset game
+                reset();
+                //document.location.reload(true);
+            /* 
                 x = canvas.width/2;
                 y = canvas.height-30;
                 dx = 1;
                 dy = -1;
-                window.location.reload(true);
-
+                alert("before clear: " + timer);
+                timer = clearInterval(timer);
+                alert(timer);*/
+                
             }
         }
 
@@ -310,17 +383,32 @@
         // updates x and y position for next interval
         x += dx;
         y += dy;
+    }
         
         
+
+
+    function reset() {
+        reloadVars();
+        document.getElementById('canvas-overlay').className = 'canvas-overlay';
     }
 
-    // calls draw() function every 10 milliseconds until we stop it
-    function startGame() {
+    
 
+    // calls draw() function every 10 milliseconds until we stop it
+    function startGame() {  
+        
+        alert(timer);
         // hides overlay on game start
         document.getElementById('canvas-overlay').className = 'canvas-hide';
+        // start game, sets timer var to 1
+        timer = setInterval(draw, 1);
+        /*alert("set Interval: " + timer);
+        timer = clearInterval();
+        alert("clear interval: " + timer);
+        */
         
-        setInterval(draw, 1);
+
     };
 
 
