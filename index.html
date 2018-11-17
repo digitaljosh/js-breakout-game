@@ -7,7 +7,7 @@
     	canvas {
             border-radius: 8px; 
             border:1px solid black; 
-            background: #000000; 
+            background: #fff; 
             display: block; 
             margin: 0 auto;
             background-image: url(https://oregonbaba.com/wp-content/uploads/2018/11/website-bckgrnd-V3-min-1.png)
@@ -72,7 +72,7 @@
     <div id="body-wrapper">
         <div style="display: none;">
             <!--<img id="source" src="images/game-sprite-2.png" width="300" height="227" />-->
-            <img id="source" src="https://oregonbaba.com/wp-content/uploads/2018/11/game-sprite-2.png" width="300" height="227" />
+            <img id="source" src="https://oregonbaba.com/wp-content/uploads/2018/11/bg-breakout-game-ball-icon.png" width="300" height="227" />
         </div>
 
         <div id="canvas-wrapper">
@@ -290,7 +290,7 @@
         ctx.beginPath();
         // draws paddle
         ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = "#000000";
         ctx.fill();
         ctx.closePath();
     }
